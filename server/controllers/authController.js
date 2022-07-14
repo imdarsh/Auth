@@ -11,15 +11,14 @@ const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
 
     if(!name || !email || !password){
-        res.status(400);
-        throw new Error('Please add all fields')
+        return res.status(400).json({ message: 'Please add all fields' });
     }
 
     // Check if user already exists
     const userExists = await User.findOne({ email });
     if(userExists) {
-        res.status(400);
-        throw new Error('User already exists');
+        return res.status(400).json({ message: 'Invalid user details' });
+        
     }
 
     // Hash password
@@ -41,8 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
         });
     }
     else {
-        res.status(400);
-        throw new Error('Invalid user data');
+        return res.status(400).json({ message: 'Invalid user details' });   
     }
 })
 
@@ -64,8 +62,7 @@ const loginUser = asyncHandler(async (req, res) => {
         })
     }
     else {
-        res.status(400);
-        throw new Error('Invalid Credentials');
+        return res.status(400).json({ message: 'Invalid Credentials' });
     }
 })
 
