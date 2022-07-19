@@ -3,13 +3,16 @@ import Navbar from '../Components/Navbar';
 import { Container } from '@mui/system';
 import { Button, TextField, Typography, Alert } from '@mui/material';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { setUserSession } from '../utils/Session';
 
 function Signin() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+
+    let navigate = useNavigate();
 
     const registerUser = async (e) => {
         e.preventDefault();
@@ -19,7 +22,8 @@ function Signin() {
         }
         const user = await axios.post(`http://localhost:8000/api/users/login`, users, { mode: 'cors'})
         .then(function (response) {
-            console.log('Success');
+            setUserSession(response.data.token, response.data.name);
+            navigate('/profile');
         })
         .catch(function (error) {
             setError(error.response.data.message);
@@ -32,7 +36,7 @@ function Signin() {
         <>
             <Navbar />
             <Container>
-                <Typography variant="h4" sx={{ textAlign: 'center', py:2 }}>Sign Up</Typography>
+                <Typography variant="h4" sx={{ textAlign: 'center', py:2 }}>Sign In</Typography>
                     { error && <Alert severity="error">{error}</Alert>} 
                     <form onSubmit={registerUser}>
                         <TextField fullWidth value={email} onChange={(e) => setEmail(e.target.value)} size="small" label="Email" sx={{ my:2 }} />

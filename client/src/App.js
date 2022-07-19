@@ -3,6 +3,8 @@ import Home from './Pages/Home';
 import Signin from "./Pages/Signin";
 import Signup from "./Pages/Signup";
 import Profile from "./Pages/Profile";
+import PrivateRoute from "./utils/PrivateRoute";
+import ErrorPage from './Pages/ErrorPage';
 
 function App() {
   return (
@@ -12,7 +14,10 @@ function App() {
           <Route exact path="/" element={<Home />}></Route>
           <Route path="/signin" element={<Signin />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />}></Route>
+          </Route>
+          <Route path="*" element={<ErrorPage />}></Route>
         </Routes>
       </Router>        
     </div>

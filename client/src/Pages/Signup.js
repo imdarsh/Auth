@@ -4,7 +4,7 @@ import { Container } from '@mui/system';
 import { Button, TextField, Typography, Alert } from '@mui/material';
 import { setUserSession } from '../utils/Session';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Signup() {
 
@@ -12,6 +12,8 @@ function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+
+    let navigate = useNavigate();
 
     const registerUser = async (e) => {
         e.preventDefault();
@@ -23,6 +25,7 @@ function Signup() {
         const user = await axios.post(`http://localhost:8000/api/users`, users, { mode: 'cors'})
         .then(function (response) {
             setUserSession(response.data.token, response.data.name);
+            navigate('/profile')
         })
         .catch(function (error) {
             setError(error.response.data.message);
