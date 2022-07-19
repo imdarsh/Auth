@@ -80,9 +80,20 @@ const generateToken = (id) => {
     })
 }
 
+const verifyToken = (token) => {
+    const verifyt = jwt.verify(token, process.env.JWT_SECRET);
+    if(verifyt) {
+        return true;
+    }
+    else {
+        res.status(403).json({ message: 'Forbidden Data' });
+    }
+}
+
 
 module.exports = {
     registerUser,
     loginUser,
-    getMe
+    getMe,
+    verifyToken
 }

@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Navbar from '../Components/Navbar';
 import { Container } from '@mui/system';
 import { Button, TextField, Typography, Alert } from '@mui/material';
+import { setUserSession } from '../utils/Session';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function Signup() {
 
@@ -20,7 +22,7 @@ function Signup() {
         }
         const user = await axios.post(`http://localhost:8000/api/users`, users, { mode: 'cors'})
         .then(function (response) {
-            console.log('Success');
+            setUserSession(response.data.token, response.data.name);
         })
         .catch(function (error) {
             setError(error.response.data.message);
@@ -42,6 +44,7 @@ function Signup() {
                     <TextField fullWidth value={password} type="password" onChange={(e) => setPassword(e.target.value)} size="small" label="Password" sx={{ my:2 }} />
                     <Button variant="contained" type="submit">Sign up</Button>
                 </form>
+                <Typography sx={{ my:2 }}><Link to="/signin">Already have an account? Signin</Link></Typography>
             </Container>
         </>
     )
